@@ -1,0 +1,3 @@
+{0}, I fear to tell you that I have discovered that {2} is part of a conspiracy against you.
+{0}, I must tell you - {2} is conspiring against you!
+There is a conspiracy, {0}, and {2} is part of it!

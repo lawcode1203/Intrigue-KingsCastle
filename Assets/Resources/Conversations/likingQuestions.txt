@@ -1,0 +1,4 @@
+Tell me, {0}, how much do you like {2}?
+Tell me honestly, how much do you care for {2}?
+{0}, how much do you really like {2}?
+Confide in me, {0}, how much stock do you put in {2}?

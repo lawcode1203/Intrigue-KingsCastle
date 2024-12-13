@@ -1,0 +1,4 @@
+{0}, I, {1}, have decided to form a conspiracy to rid ourselves of {2}! Will you join?
+{0}, I have chosen to form a conspiracy to get rid of {2}. Will you join us?
+There is a conspiracy, {0}, formed to rid ourselves of {2}. Will you ally yourself with us?
+Let us conspire, {0}, to slay {2}! Do you agree? 

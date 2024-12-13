@@ -1,0 +1,3 @@
+Yes.
+Indeed.
+Yes, {0}.

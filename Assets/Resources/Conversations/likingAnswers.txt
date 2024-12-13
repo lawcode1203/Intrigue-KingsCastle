@@ -1,0 +1,4 @@
+I have {3} confidence in {2}.
+{0}, I have have {3} confidence in {2}.
+I have {3} trust in {2}.
+I have {3} trust for {2}.
