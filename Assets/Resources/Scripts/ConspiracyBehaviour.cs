@@ -68,7 +68,7 @@ public class ConspiracyBehaviour : MonoBehaviour
             conspiracy.targetid = targetid;
             conspiracy.conspirators = new int[1];
             conspiracy.conspirators[0] = identityBehaviour.characterId;
-            Debug.Log(gameManager.getCharacterFullName(identityBehaviour.characterId) + " started a conspiracy against " + gameManager.getCharacterFullName(targetid));
+            //Debug.Log(gameManager.getCharacterFullName(identityBehaviour.characterId) + " started a conspiracy against " + gameManager.getCharacterFullName(targetid));
         }
     }
 }

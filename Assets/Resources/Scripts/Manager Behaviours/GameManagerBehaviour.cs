@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
+using System.Collections;
 public class Character{
     public string name;
     public int characterId;
@@ -14,7 +16,6 @@ public class GameManagerBehaviour : MonoBehaviour
     public AnnouncementManagerBehaviour announcementManager;
     public PositionManagerBehaviour positionManager;
     private StartScreenBehaviour sScreenBehaviour;
-    private GameEndBehaviour gameEndBehaviour;
     public List<Character> characters = new List<Character>();
     public bool hasGameStarted = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,9 +25,14 @@ public class GameManagerBehaviour : MonoBehaviour
 
         announcementManager = GameObject.Find("AnnouncementManager").GetComponent<AnnouncementManagerBehaviour>();
         positionManager = GameObject.Find("PositionManager").GetComponent<PositionManagerBehaviour>();
+    }
 
-        gameEndBehaviour = GameObject.Find("GameEndScreen").GetComponent<GameEndBehaviour>();
-        Debug.Log(GameObject.Find("GameEndScreen"));
+    public Vector3 getRandomSpawnPosition(){
+        // Get all GameObjects tagged "SpawnLocation"
+        GameObject[] spawnLocations = GameObject.FindGameObjectsWithTag("SpawnLocation");
+        // Get a random spawn location
+        GameObject spawnLocation = spawnLocations[Random.Range(0, spawnLocations.Length)];
+        return spawnLocation.transform.position;
     }
 
 
@@ -44,7 +50,14 @@ public class GameManagerBehaviour : MonoBehaviour
 
     public void startGame(){
         createUserPlayer(sScreenBehaviour.playerName);
-        spawnStartingCharacters();}
+        spawnStartingCharacters();
+        StartCoroutine(waitFourSecondsAndSetHasGameStarted());
+    }
+
+    IEnumerator waitFourSecondsAndSetHasGameStarted(){
+        yield return new WaitForSeconds(4f);
+        hasGameStarted = true;
+    }
 
     public int getRandomCharacterId(){
         return Random.Range(0, numCharacters);
@@ -92,7 +105,7 @@ public class GameManagerBehaviour : MonoBehaviour
         }
 
         createAndAssignCharacter(characters[characterId]);
-        hasGameStarted = true;
+        
     }
 
     public string getRandomCharacterName(bool isMale){
@@ -114,7 +127,8 @@ public class GameManagerBehaviour : MonoBehaviour
 
     private void createAndAssignCharacter(Character character){
         // Spawn a new GameObject using a prefab
-        GameObject characterObject = Instantiate(Resources.Load("Prefabs/DemoCharacter"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        Vector3 spawnPoint = getRandomSpawnPosition();
+        GameObject characterObject = Instantiate(Resources.Load("Prefabs/DemoCharacter"), spawnPoint, Quaternion.identity) as GameObject;
         characterObject.name = character.name;
         characterObject.tag = "Character";
 
@@ -140,6 +154,7 @@ public class GameManagerBehaviour : MonoBehaviour
         for (int i = 1; i < numCharacters; i++){
             spawnCharacter(i);
         }
+        
     }
 
     public GameObject getGameObjectFromCharacterId(int characterId){
@@ -197,8 +212,18 @@ public class GameManagerBehaviour : MonoBehaviour
     }
 
     public void checkIfPlayerStillExists(){
-        GameObject playerCharacter = getGameObjectFromCharacterId(0);
-        if (playerCharacter == null){
+        GameObject[] allCharacters = GameObject.FindGameObjectsWithTag("Character");
+        bool playerCharacterExists = false;
+
+        foreach (GameObject character in allCharacters){
+            IdentityBehaviour identityBehaviour = character.GetComponent<IdentityBehaviour>();
+            if (identityBehaviour.isPlayer){
+                playerCharacterExists = true;
+            }
+        }
+
+        if (!playerCharacterExists && hasGameStarted){
+            Debug.Log("Game End called, when it should not be called");
             gameEnd();
         }
     }

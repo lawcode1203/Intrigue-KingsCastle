@@ -16,31 +16,43 @@ public class GameEndBehaviour : MonoBehaviour
         // Hide self
         endTextObject.text = endText;
         timeManager = GameObject.Find("TimeManager").GetComponent<TimeManagerBehaviour>();
+        beingEnded();
         
     }
 
+    private void RemoveAllOtherScreens(){
+        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+
+        foreach (GameObject obj in allObjects) {
+            if (obj.CompareTag("StartScreen")) {
+                Debug.Log("Destroying inactive or active StartScreen: " + obj.name);
+
+                // Destroy the GameObject
+                Destroy(obj);
+            }
+        }
+    }
+
     public void beingEnded(){
-        renderer.enabled = true;
+        Debug.Log("BeingEnded");
         // format the text
         float time = timeManager.getTime();
         string endText = this.endText.Replace("{0}", timeManager.getTime().ToString());
         endText = endText.Replace("{1}", (time/60.0f).ToString());
         endTextObject.text = endText;
+
+        RemoveAllOtherScreens();
+
     }
 
     public void checkIfPlayerStillExists(){
-        GameObject playerCharacter = gameManager.getGameObjectFromCharacterId(0);
-        if (playerCharacter == null){
-            Debug.Log("Being ended");
+        GameObject playerCharacter = GameObject.Find("PlayerCharacter");
+        if(playerCharacter == null){
             beingEnded();
         }
     }
     // Update is called once per frame
     void Update()
     {
-        float time = timeManager.getTime();
-        string endText = this.endText.Replace("{0}", timeManager.getTime().ToString());
-        endText = endText.Replace("{1}", (time/60.0f).ToString());
-        endTextObject.text = endText;
     }
 }

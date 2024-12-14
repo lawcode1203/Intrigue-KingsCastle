@@ -108,8 +108,8 @@ public class ConversationBehaviour : MonoBehaviour
     }
 
     public void processConversation(Conversation conversation, GameObject senderCharacter){
-        Debug.Log("Character: " + gameManager.getCharacterFullName(senderCharacter.GetComponent<IdentityBehaviour>().characterId) + " is now processing a conversation.");
-        Debug.Log(conversation.speakerId + " and " + conversation.responderId);
+        //Debug.Log("Character: " + gameManager.getCharacterFullName(senderCharacter.GetComponent<IdentityBehaviour>().characterId) + " is now processing a conversation.");
+        //Debug.Log(conversation.speakerId + " and " + conversation.responderId);
         
         
         

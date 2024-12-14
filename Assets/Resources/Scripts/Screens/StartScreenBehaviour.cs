@@ -36,7 +36,9 @@ public class StartScreenBehaviour : MonoBehaviour
         gameObject.SetActive(false);
         playButton.gameObject.SetActive(false);
         nameInputField.gameObject.SetActive(false);
+        tScreenBehaviour.gameObject.SetActive(true);
         tScreenBehaviour.loadUp();
+        
     }
 
     // Update is called once per frame

@@ -6,7 +6,7 @@ using System.Linq;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float speed = 1f;
-    public float communicationRange = 5f;
+    public float communicationRange = 4f;
     private GameObject clickedObjectPublic;
     private GameManagerBehaviour gameManager;
     private IdentityBehaviour playerIdentity;
@@ -84,16 +84,33 @@ public class PlayerBehaviour : MonoBehaviour
         speakingText.gameObject.SetActive(false);
     }
 
+    private bool existsCharacterInRange(){
+        GameObject closestCharacter = getNearestCharacter();
+        float distance = Vector3.Distance(closestCharacter.transform.position, transform.position);
+        if (distance < communicationRange){
+            return true;
+        }
+        return false;
+    }
+
     private void keyInputRouting(){
         // On keypress of "q" route to ask about character
-        if (Input.GetKey("q") && timeSinceLastKeyInput > 0.5f){
+        if (Input.GetKey("q") && timeSinceLastKeyInput > 2.5f){
             askAboutCharacter();
             timeSinceLastKeyInput = 0f;
         }
-        if (Input.GetKey("k") && timeSinceLastKeyInput > 0.5f){
+        if (Input.GetKey("k") && timeSinceLastKeyInput > 4.0f && existsCharacterInRange()){
+            showFloatingDagger();
             gameManager.killCharacter(gameManager.getCharacterIdFromGameObject(getNearestCharacter()));
             timeSinceLastKeyInput = 0f;
         }
+    }
+
+    private void showFloatingDagger(){
+        GameObject dagger = Instantiate(Resources.Load("Prefabs/DaggerIcon"), transform.position, Quaternion.identity) as GameObject;
+        DaggerIconBehaviour daggerBehaviour = dagger.GetComponent<DaggerIconBehaviour>();
+        daggerBehaviour.headGameObject = this.gameObject;
+        Destroy(dagger, 4f);
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created

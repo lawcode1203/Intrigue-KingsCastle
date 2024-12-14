@@ -23,8 +23,8 @@ public class TScreenBehaviour : MonoBehaviour
     }
 
     void moveToGame(){
-        gameObject.SetActive(false);
         gameManager.startGame();
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame

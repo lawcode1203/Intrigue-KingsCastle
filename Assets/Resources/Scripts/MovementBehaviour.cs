@@ -78,12 +78,22 @@ public class MovementBehaviour : MonoBehaviour
         if (conspiracyBehaviour.getIsInConspiracy()){
             if (Vector3.Distance(transform.position, gameManager.getGameObjectFromCharacterId(conspiracyBehaviour.conspiracy.targetid).transform.position) < 4f){
                 Debug.Log("Close enough for an assassination");
+                spawnDaggerIconAboveHead();
+
                 gameManager.killCharacter(conspiracyBehaviour.conspiracy.targetid);
                 conspiracyBehaviour.isInConspiracy = false;
                 //conspiracyBehaviour.conspiracy = null;
             }
         }
         
+    }
+
+    private void spawnDaggerIconAboveHead(){
+        // Instantiate the dagger icon above the head, hiding it after 4 seconds
+        GameObject daggerIcon = Instantiate(Resources.Load("Prefabs/DaggerIcon"), transform.position, Quaternion.identity) as GameObject;
+        DaggerIconBehaviour daggerIconBehaviour = daggerIcon.GetComponent<DaggerIconBehaviour>();
+        daggerIconBehaviour.headGameObject = this.gameObject;
+        Destroy(daggerIcon, 4f);
     }
 
     // Update is called once per frame
